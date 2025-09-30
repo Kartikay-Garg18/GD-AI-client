@@ -1,9 +1,24 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux';
 import SignIn from './Authentication/SignIn';
 import SignUp from './Authentication/SignUp';
 
 const AuthPage = () => {
     const [signIn, setSignIn] = React.useState(true);
+    const navigate = useNavigate();
+    const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+
+    React.useEffect(() => {
+        if(isAuthenticated){
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
+    
+    const switchToSignIn = () =>{
+        setSignIn(true);
+    }
+
     const toggleSignIn = (event) => {
         const isSignIn = event.target.dataset.signin === 'true';
         setSignIn(isSignIn);
@@ -18,7 +33,7 @@ const AuthPage = () => {
                     <span data-signin="true" className={`flex-1 lg:flex-none lg:px-14 py-3 rounded-xl text-sm sm:text-base text-center ${signIn ? 'bg-gray-100' : 'bg-white'} cursor-pointer transition-colors`} onClick={toggleSignIn}>Sign In</span>
                     <span data-signin="false" className={`flex-1 lg:flex-none lg:px-14 py-3 rounded-xl text-sm sm:text-base text-center ${!signIn ? 'bg-gray-100' : 'bg-white'} cursor-pointer transition-colors`} onClick={toggleSignIn}>Sign Up</span>
                 </div>
-                {signIn ? <div className='w-full sm:w-13/20'><SignIn /></div> : <div className='w-full sm:w-13/20'><SignUp /></div>}
+                {signIn ? <div className='w-full sm:w-13/20'><SignIn /></div> : <div className='w-full sm:w-13/20'><SignUp switchToSignIn={switchToSignIn} /></div>}
             </div>
         </div>
         <div className='hidden lg:flex justify-center items-center w-3/5 h-screen'>

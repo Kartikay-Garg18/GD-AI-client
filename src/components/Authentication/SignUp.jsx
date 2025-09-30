@@ -1,24 +1,39 @@
 import React from "react";
 import { signUpSchema } from "../../utils/validationSchema";
 import toast, {Toaster} from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser, clearError } from "../../store/authSlice";
 
-const SignUp = () => {
+const SignUp = ({switchToSignIn}) => {
     const [formData, setFormData] = React.useState({name: '', email: '', password: ''});
+    const dispatch = useDispatch();
+    const {isLoading} = useSelector((state) => state.auth);
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             signUpSchema.parse(formData);
-            console.log("Form data is valid:", formData);
-            setFormData({name: '', email: '', password: ''});
         } catch (error) {
             const err = JSON.parse(error);
             toast.error(err[0].message);
             return;
+        }
+
+        dispatch(clearError());
+        try {
+            const result = await dispatch(signupUser(formData));
+            if(signupUser.fulfilled.match(result)){
+                setFormData({name: '', email: '', password: ''});
+                switchToSignIn();
+            } else if(signupUser.rejected.match(result)){
+                toast.error(result.payload || "Sign up failed");
+            }
+        } catch (error) {
+            toast.error(error || "Signup error");
         }
     }
 
@@ -62,7 +77,20 @@ const SignUp = () => {
                     </div>
                     <input type="password" required name="password" id="password" value={formData.password} onChange={handleChange} className="border-gray-50 p-2 w-full sm:w-19/20 mx-0 sm:mx-2 rounded-lg bg-gray-100 text-sm sm:text-base" placeholder="Enter Password" />
                 </>
-                <button type="submit" className="mt-5 border rounded-xl w-full sm:w-19/20 py-3 bg-black text-white cursor-pointer text-sm sm:text-base font-medium hover:bg-gray-800 transition-colors">Sign Up</button>
+                <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className="mt-5 border rounded-xl w-full sm:w-19/20 py-3 bg-black text-white cursor-pointer text-sm sm:text-base font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {isLoading ? (
+                        <span className="flex items-center justify-center gap-2">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            Creating Account...
+                        </span>
+                    ) : (
+                        "Sign Up"
+                    )}
+                </button>
             </form>
         </div>
     )
