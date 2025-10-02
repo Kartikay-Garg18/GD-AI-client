@@ -7,7 +7,7 @@ import SignUp from './Authentication/SignUp';
 const AuthPage = () => {
     const [signIn, setSignIn] = React.useState(true);
     const navigate = useNavigate();
-    const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+    const { isAuthenticated } = useSelector((state) => state.auth);
 
     React.useEffect(() => {
         if(isAuthenticated){

@@ -38,10 +38,19 @@ export const loginUser = createAsyncThunk(
     }
 )
 
+const getUser = () => {
+    try {
+        const user = Cookies.get('user');
+        return user ? JSON.parse(user) : null;
+    } catch (error) {
+        return null;
+    }
+}
+
 const authSlice = createSlice({
     name : 'auth',
     initialState : {
-        user : null,
+        user : getUser(),
         token: Cookies.get('token') || null,
         isAuthenticated : !!Cookies.get('token'),
         error : null,
@@ -54,6 +63,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.error = null;
             Cookies.remove('token');
+            Cookies.remove('user');
         },
         setCredentials: (state, action) => {
             const {user, token} = action.payload;
@@ -62,6 +72,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.error = null;
             Cookies.set('token', token, cookieOptions);
+            Cookies.set('user', JSON.stringify(user), cookieOptions);
         },
         clearError : (state) => {
             state.error = null;
@@ -96,6 +107,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.error = null;
             Cookies.set('token', action.payload.token, cookieOptions);
+            Cookies.set('user', JSON.stringify(action.payload.user), cookieOptions);
         })
         .addCase(loginUser.rejected, (state, action) => {
             state.isLoading = false;

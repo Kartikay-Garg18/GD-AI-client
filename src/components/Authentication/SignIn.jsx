@@ -30,7 +30,7 @@ const SignIn = () => {
         try{
             const result = await dispatch(loginUser(formData));
             if(loginUser.fulfilled.match(result)){
-                navigate('/dashboard');
+                navigate('/home');
             } else if(loginUser.rejected.match(result)){
                 toast.error(result.payload || "Login Failed");
             }
