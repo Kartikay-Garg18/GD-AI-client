@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const MeetingCard = React.memo(() => {
+const MeetingCardComponent = () => {
   return (
     <div className='w-full rounded-lg bg-white p-3 md:p-4 flex flex-col gap-3 md:gap-4 transition-all duration-300 ease-in-out hover:scale-100 hover:bg-white/30 hover:shadow-lg hover:-translate-y-0.5'>
         <>
@@ -14,6 +14,8 @@ const MeetingCard = React.memo(() => {
         </div>
     </div>
   )
-})
+}
+
+const MeetingCard = React.memo(MeetingCardComponent, () => true);
 
 export default MeetingCard

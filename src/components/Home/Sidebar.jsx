@@ -8,12 +8,12 @@ import HistoryIcon from "../../assets/History.svg"
 import CalendarIcon from "../../assets/Calendar.svg"
 import { Link } from 'react-router-dom'
 
-const Sidebar = () => {
+const SidebarComponent = () => {
   const dispatch = useDispatch()
 
-  const handleLogout = () => {
+  const handleLogout = React.useCallback(() => {
     dispatch(logout())
-  }
+  }, [dispatch])
 
   return (
     <div className='border rounded-lg h-full flex flex-row md:flex-col bg-black items-center justify-center md:justify-between px-2 md:px-3 py-3 md:py-4 gap-2 md:gap-0'>
@@ -42,5 +42,7 @@ const Sidebar = () => {
     </div>
   )
 }
+
+const Sidebar = React.memo(SidebarComponent, () => true);
 
 export default Sidebar

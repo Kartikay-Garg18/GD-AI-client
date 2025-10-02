@@ -1,7 +1,7 @@
 import React from 'react'
 import GroupIcon from "../../assets/Group.svg";
 
-const JoinCard = React.memo(() => {
+const JoinCardComponent = () => {
   return (
     <div className='cursor-pointer w-full md:w-9/20 bg-white rounded-lg p-2 sm:p-3 md:p-4 flex flex-col gap-2 sm:gap-4 md:gap-6 transition-all duration-300 ease-in-out hover:scale-100 hover:bg-white/30 hover:shadow-lg hover:-translate-y-0.5'>
         <div className='bg-gray-600 w-fit p-1.5 sm:p-2.5 md:p-3 rounded-lg'>
@@ -13,6 +13,8 @@ const JoinCard = React.memo(() => {
         </div>
     </div>
   )
-})
+}
+
+const JoinCard = React.memo(JoinCardComponent, () => true);
 
 export default JoinCard

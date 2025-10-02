@@ -4,7 +4,7 @@ import MeetingCard from '../Utils/MeetingCard'
 import CreateCard from '../Utils/CreateCard'
 import JoinCard from '../Utils/JoinCard'
 
-const Hero = React.memo(() => {
+const HeroComponent = () => {
   return (
     <>
     <Header />
@@ -42,6 +42,8 @@ const Hero = React.memo(() => {
     </>
     
   )
-})
+}
+
+const Hero = React.memo(HeroComponent, () => true);
 
 export default Hero
