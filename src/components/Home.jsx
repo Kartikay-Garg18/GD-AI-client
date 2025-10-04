@@ -1,8 +1,14 @@
 import React from 'react'
 import Sidebar from './Home/Sidebar'
 import Hero from './Home/Hero'
+import { addMeetings } from '../store/roomSlice'
+import { useDispatch } from 'react-redux'
 
 const Home = React.memo(() => {
+  const dispatch = useDispatch();
+  React.useEffect(()=>{
+    dispatch(addMeetings());
+  },[])
 
   return (
     <div className="min-h-screen bg-gray-100 w-full flex flex-col md:flex-row">
