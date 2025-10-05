@@ -17,7 +17,7 @@ const JoinRoom = ({isOpen, onClose}) => {
 
         try {
             setIsJoining(true);
-            // navigate(`room/${roomCode.trim()}`);
+            // navigate(`/room/${roomCode.trim()}`);
             console.log("Room Joined")
             handleClose();
         } catch (error) {
