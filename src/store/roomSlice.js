@@ -52,9 +52,8 @@ const roomSlice = createSlice({
         .addCase(createMeeting.pending, (state) => {
             state.createLoading = true;
         })
-        .addCase(createMeeting.fulfilled, (state, action) => {
+        .addCase(createMeeting.fulfilled, (state) => {
             state.createLoading = false;
-            state.meetings = [action.payload, ...state.meetings];
         })
         .addCase(createMeeting.rejected, (state) => {
             state.createLoading = false;
